@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Sport: Identifiable, Codable, Hashable {
+struct SportDTO: Codable {
     let id: Int
     let name: String
     let sportIconUrl: String
