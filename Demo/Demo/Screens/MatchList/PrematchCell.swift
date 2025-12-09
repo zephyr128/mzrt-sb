@@ -25,15 +25,15 @@ struct PrematchCell: View {
                 
                 Text(item.competitionName)
                     .font(.system(size: 8))
-                    .foregroundColor(.gray)
+                    .foregroundColor(.secondaryText)
                 
                 Text(formattedDate)
                     .font(.system(size: 12, weight: .bold))
-                    .foregroundColor(.white)
+                    .foregroundColor(.primaryText)
                 
                 Text(formattedTime)
                     .font(.system(size: 20, weight: .bold))
-                    .foregroundColor(.white)
+                    .foregroundColor(.primaryText)
             }
             .frame(minWidth: 0, maxWidth: .infinity)
             
@@ -46,7 +46,7 @@ struct PrematchCell: View {
         .background(Color.black.opacity(0.1))
         .overlay(
             RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.white.opacity(0.3), lineWidth: 1)
+                .stroke(Color.borderGray, lineWidth: 1)
         )
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
@@ -60,7 +60,7 @@ struct PrematchCell: View {
             }
             Text(name)
                 .font(.system(size: 14, weight: .bold))
-                .foregroundColor(.white)
+                .foregroundColor(.primaryText)
                 .lineLimit(2)
         }
         .frame(minWidth: 0, maxWidth: .infinity)

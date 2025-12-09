@@ -16,8 +16,8 @@ struct TimeFilterTabView: View {
                 .font(.system(size: 12, weight: .semibold))
                 .padding(.horizontal, 18)
                 .padding(.vertical, 10)
-                .background(RoundedRectangle(cornerRadius: 8).fill(isSelected ? Color.yellow : Color(.systemGray5)))
-                .foregroundColor(isSelected ? .black : .primary)
+                .background(RoundedRectangle(cornerRadius: 8).fill(isSelected ? Color.primaryColor : Color.secondaryColor))
+                .foregroundColor(isSelected ? Color.black : Color.primaryText)
         }
         .padding(.bottom, 8)
     }

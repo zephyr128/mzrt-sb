@@ -10,13 +10,17 @@ struct SportCategorySelector: View {
     let availableSports: [Sport]
     @Binding var selectedSportId: Int?
 
+    private var sportById: [Int: Sport] {
+        Dictionary(uniqueKeysWithValues: availableSports.map { ($0.id, $0) })
+    }
+
     var body: some View {
         HorizontalTabView(
             items: availableSports.map { $0.id },
             selected: $selectedSportId
         ) { id, isSelected in
             Group {
-                if let sport = availableSports.first(where: { $0.id == id }) {
+                if let id, let sport = sportById[id] {
                     SportCategoryButton(sport: sport, isSelected: isSelected)
                 }
             }
@@ -36,9 +40,16 @@ struct SportCategoryButton: View {
             }
             Text(sport.name)
                 .font(.system(size: 12, weight: .semibold))
+                .lineLimit(1)
         }
-        .padding(8)
-        .background(RoundedRectangle(cornerRadius: 8).fill(isSelected ? Color.yellow : Color(.systemGray5)))
-        .foregroundColor(isSelected ? .black : .primary)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .fill(isSelected ? Color.primaryColor : Color.secondaryColor)
+        )
+        .foregroundColor(isSelected ? Color.black : Color.primaryText)
+        .animation(.easeInOut(duration: 0.15), value: isSelected)
     }
 }
+

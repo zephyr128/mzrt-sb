@@ -9,55 +9,73 @@ import SwiftUI
 
 struct MatchHomeScreen: View {
     @StateObject var viewModel: MatchListViewModel
-
+    
     var body: some View {
-        VStack {
-            Group {
-                switch viewModel.viewState {
-                case .loading:
-                    LoadingView()
-                case .content:
-                    SportCategoryPager()
-                        .environmentObject(viewModel)
-                case .empty:
-                    EmptyStateView(title: "Nema dostupnih mečeva",
-                                   message: "Proverite kasnije ili se povežite na internet.")
-                case .error(let message):
-                    ErrorStateView(message: message, retryAction: viewModel.loadData)
-                }
-            }.transition(.opacity.animation(.smooth))
+        ZStack {
+            Color.background
+                .edgesIgnoringSafeArea(.all)
+            content
+                .transition(.opacity)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(red: 28/255, green: 31/255, blue: 33/255))
         .preferredColorScheme(.dark)
-        .onAppear { viewModel.loadData() }
+        .onAppear {
+            viewModel.loadData()
+        }
+    }
+    
+    @ViewBuilder
+    private var content: some View {
+        switch viewModel.viewState {
+        case .loading:
+            LoadingView()
+        case .content:
+            SportCategoryPager()
+                .environmentObject(viewModel)
+        case .empty:
+            EmptyStateView(
+                title: NSLocalizedString("Nema dostupnih mečeva", comment: "No matches"),
+                message: NSLocalizedString("Proverite kasnije ili se povežite na internet.", comment: "Try again later")
+            )
+        case .error(let message):
+            ErrorStateView(message: message, retryAction: viewModel.loadData)
+        }
     }
 }
 
+// MARK: - SportCategoryPager
+
 struct SportCategoryPager: View {
     @EnvironmentObject var viewModel: MatchListViewModel
-    
-    @State var selectedSportId: Int? = 1
+    @State private var selectedSportId: Int?
 
     var body: some View {
         VStack(spacing: 8) {
-            SportCategorySelector(availableSports: viewModel.availableSports, selectedSportId: $selectedSportId)
-                .frame(height: 40)
+            SportCategorySelector(
+                availableSports: viewModel.availableSports,
+                selectedSportId: $selectedSportId
+            )
+            .frame(height: 40)
             
             TabView(selection: $selectedSportId) {
                 ForEach(viewModel.availableSports, id: \.id) { sport in
-                    SportMatchesList(matches: viewModel.matchesBySport[sport.id] ?? [])
-                        .tag(sport.id)
+                    SportMatchesList(
+                        matches: viewModel.matchesBySport[sport.id] ?? []
+                    )
+                    .tag(sport.id)
                 }
             }
-            .animation(.easeInOut(duration: 0.2), value: selectedSportId)
             .tabViewStyle(.page(indexDisplayMode: .never))
         }
         .padding(.top, 24)
         .ignoresSafeArea(edges: .bottom)
-        .onChange(of: viewModel.availableSports) { old, new in
+        .onChange(of: viewModel.availableSports) { old, newSports in
             if selectedSportId == nil {
-                selectedSportId = new.first?.id
+                selectedSportId = newSports.first?.id
+            }
+        }
+        .onAppear {
+            if selectedSportId == nil {
+                selectedSportId = viewModel.availableSports.first?.id
             }
         }
     }

@@ -13,6 +13,7 @@ struct LiveMatchCell: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             
+            // Competition + current time
             HStack(spacing: 8) {
                 if let url = item.competitionIcon {
                     SVGImageView(url: url)
@@ -21,70 +22,68 @@ struct LiveMatchCell: View {
                 
                 Text(item.competitionName)
                     .font(.system(size: 12))
-                    .foregroundColor(.gray)
+                    .foregroundColor(.secondaryText)
                 
                 Spacer()
                 
                 if let current = item.currentTime {
                     Image(systemName: "play.rectangle.fill")
-                        .foregroundColor(Color.teal)
+                        .foregroundColor(.accentColor)
+                        .frame(width: 18, height: 18)
                     Text(current)
-                        .font(.system(size: 14))
-                        .foregroundColor(Color.teal)
+                        .font(.system(size: 12))
+                        .foregroundColor(.accentColor)
                 }
             }
             
             // Teams & scores
             HStack {
                 VStack(alignment: .leading, spacing: 12) {
-                    HStack(spacing: 8) {
-                        if let url = item.homeTeamAvatarUrl {
-                            SVGImageView(url: url)
-                                .frame(width: 24, height: 24)
-                        }
-                        
-                        Text(item.homeTeam)
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(.white)
-                    }
-                    
-                    HStack(spacing: 8) {
-                        if let url = item.awayTeamAvatarUrl {
-                            SVGImageView(url: url)
-                                .frame(width: 24, height: 24)
-                        }
-                        
-                        Text(item.awayTeam)
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(.white)
-                    }
+                    TeamView(name: item.homeTeam, avatarURL: item.homeTeamAvatarUrl)
+                    TeamView(name: item.awayTeam, avatarURL: item.awayTeamAvatarUrl)
                 }
-                
-                Spacer()
+                .frame(maxWidth: .infinity, alignment: .leading)
                 
                 VStack(spacing: 18) {
                     let homeResult = item.result?.home != nil ? "\(item.result!.home)" : "--"
                     let awayResult = item.result?.away != nil ? "\(item.result!.away)" : "--"
-
+                    
                     Text(homeResult)
                         .font(.system(size: 22, weight: .bold))
-                        .foregroundColor(.white)
-
+                        .foregroundColor(.primaryText)
+                    
                     Text(awayResult)
                         .font(.system(size: 22, weight: .bold))
-                        .foregroundColor(.white)
+                        .foregroundColor(.primaryText)
                 }
-
             }
-            
         }
         .padding()
-        .frame(maxWidth: .infinity)
         .background(Color.black.opacity(0.3))
+        .cornerRadius(8)
         .overlay(
             RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.white.opacity(0.3), lineWidth: 1)
+                .stroke(Color.borderGray, lineWidth: 1)
         )
-        .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 }
+
+// MARK: - Team View
+
+private struct TeamView: View {
+    let name: String
+    let avatarURL: URL?
+    
+    var body: some View {
+        HStack(spacing: 8) {
+            if let url = avatarURL {
+                SVGImageView(url: url)
+                    .frame(width: 24, height: 24)
+            }
+            Text(name)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(.primaryText)
+        }
+    }
+}
+
