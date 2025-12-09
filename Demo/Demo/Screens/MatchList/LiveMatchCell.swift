@@ -15,12 +15,13 @@ struct LiveMatchCell: View {
             
             HStack(spacing: 8) {
                 if let url = item.competitionIcon {
-                    // TODO: add svg
+                    SVGImageView(url: url)
+                        .frame(width: 18, height: 18)
                 }
                 
                 Text(item.competitionName)
-                    .font(.system(size: 14))
-                    .foregroundColor(.white.opacity(0.75))
+                    .font(.system(size: 12))
+                    .foregroundColor(.gray)
                 
                 Spacer()
                 
@@ -38,20 +39,22 @@ struct LiveMatchCell: View {
                 VStack(alignment: .leading, spacing: 12) {
                     HStack(spacing: 8) {
                         if let url = item.homeTeamAvatarUrl {
-                           // TODO: Add svg
+                            SVGImageView(url: url)
+                                .frame(width: 24, height: 24)
                         }
                         
-                        Text(item.name.split(separator: "vs")[0].trimmingCharacters(in: .whitespaces))
+                        Text(item.homeTeam)
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(.white)
                     }
                     
                     HStack(spacing: 8) {
                         if let url = item.awayTeamAvatarUrl {
-                            // TODO: Add svg
+                            SVGImageView(url: url)
+                                .frame(width: 24, height: 24)
                         }
                         
-                        Text(item.name.split(separator: "vs")[1].trimmingCharacters(in: .whitespaces))
+                        Text(item.awayTeam)
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(.white)
                     }
@@ -78,6 +81,10 @@ struct LiveMatchCell: View {
         .padding()
         .frame(maxWidth: .infinity)
         .background(Color.black.opacity(0.3))
-        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.white.opacity(0.3), lineWidth: 1)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 }

@@ -13,11 +13,12 @@ import Combine
 
 struct MatchDisplayItem: Identifiable, Hashable {
     let id: Int
-    let name: String
     let startTime: Date?
     let status: MatchStatus
     let currentTime: String?
     let result: MatchResult?
+    let homeTeam: String
+    let awayTeam: String
     let homeTeamAvatarUrl: URL?
     let awayTeamAvatarUrl: URL?
     let sportId: Int
@@ -152,11 +153,12 @@ final class MatchListViewModel: ObservableObject {
 
         MatchDisplayItem(
             id: match.id,
-            name: "\(match.homeTeam) vs \(match.awayTeam)",
             startTime: match.date,
             status: match.status,
             currentTime: match.currentTime,
             result: match.result,
+            homeTeam: match.homeTeam,
+            awayTeam: match.awayTeam,
             homeTeamAvatarUrl: match.homeTeamAvatarURL,
             awayTeamAvatarUrl: match.awayTeamAvatarURL,
             sportId: match.sportId,
