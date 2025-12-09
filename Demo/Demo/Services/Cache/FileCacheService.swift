@@ -20,7 +20,7 @@ actor FileCacheService: CacheServiceProtocol {
             let url = try fileURL(forKey: key)
             try data.write(to: url, options: .atomic)
         } catch {
-            print("CACHE ERROR [\(key)]: Failed to save data. Error: \(error.localizedDescription)")
+            Log.debug("CACHE ERROR [\(key)]: Failed to save data. Error: \(error.localizedDescription)")
         }
     }
     
