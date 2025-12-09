@@ -26,7 +26,6 @@ final class DataRepository: DataRepositoryProtocol {
     }
 
     private func loadCachedData(continuation: AsyncStream<HomeFeedData>.Continuation) async {
-        
         let cachedSportsDTOs: [SportDTO]? = await cacheService.load(forKey: CacheKey.sports)
         let cachedCompetitionsDTOs: [CompetitionDTO]? = await cacheService.load(forKey: CacheKey.competitions)
         let cachedMatchesDTOs: [MatchDTO]? = await cacheService.load(forKey: CacheKey.matches)
@@ -35,30 +34,41 @@ final class DataRepository: DataRepositoryProtocol {
             sports: cachedSportsDTOs?.map { Sport(dto: $0) },
             competitions: cachedCompetitionsDTOs?.map { Competition(dto: $0) },
             matches: cachedMatchesDTOs?.map { Match(dto: $0) },
-            isInitialLoadComplete: false
+            isInitialLoadComplete: false,
+            error: nil
         ))
     }
 
     private func fetchNetworkUpdates(continuation: AsyncStream<HomeFeedData>.Continuation) async {
-        
-        async let sportsResult: [SportDTO]? = fetchAndCache(endpoint: .sports, cacheKey: CacheKey.sports)
-        async let competitionsResult: [CompetitionDTO]? = fetchAndCache(endpoint: .competitions, cacheKey: CacheKey.competitions)
-        async let matchesResult: [MatchDTO]? = fetchAndCache(endpoint: .matches, cacheKey: CacheKey.matches)
-        
-        let sports = await sportsResult
-        let competitions = await competitionsResult
-        let matches = await matchesResult
-        
-        continuation.yield(HomeFeedData(
-            sports: sports?.map { Sport(dto: $0) },
-            competitions: competitions?.map { Competition(dto: $0) },
-            matches: matches?.map { Match(dto: $0) },
-            isInitialLoadComplete: true
-        ))
+        do {
+            async let sportsResult: [SportDTO]? = fetchAndCache(endpoint: .sports, cacheKey: CacheKey.sports)
+            async let competitionsResult: [CompetitionDTO]? = fetchAndCache(endpoint: .competitions, cacheKey: CacheKey.competitions)
+            async let matchesResult: [MatchDTO]? = fetchAndCache(endpoint: .matches, cacheKey: CacheKey.matches)
+            
+            let sports = try await sportsResult
+            let competitions = try await competitionsResult
+            let matches = try await matchesResult
+            
+            continuation.yield(HomeFeedData(
+                sports: sports?.map { Sport(dto: $0) },
+                competitions: competitions?.map { Competition(dto: $0) },
+                matches: matches?.map { Match(dto: $0) },
+                isInitialLoadComplete: true,
+                error: nil
+            ))
+        } catch {
+            continuation.yield(HomeFeedData(
+                sports: nil,
+                competitions: nil,
+                matches: nil,
+                isInitialLoadComplete: true,
+                error: error
+            ))
+        }
     }
     
-    private func fetchAndCache<T: Codable>(endpoint: Endpoint, cacheKey: String) async -> [T]? {
-        let data: [T]? = try? await networkService.request(endpoint: endpoint)
+    private func fetchAndCache<T: Codable>(endpoint: Endpoint, cacheKey: String) async throws -> [T]? {
+        let data: [T]? = try await networkService.request(endpoint: endpoint)
         if let data = data, !data.isEmpty {
             await cacheService.save(data, forKey: cacheKey)
         }

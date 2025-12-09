@@ -10,4 +10,5 @@ struct HomeFeedData {
     var competitions: [Competition]?
     var matches: [Match]?
     var isInitialLoadComplete: Bool = false
+    var error: Error?
 }
