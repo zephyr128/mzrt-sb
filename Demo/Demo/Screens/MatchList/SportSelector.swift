@@ -31,10 +31,8 @@ struct SportCategoryButton: View {
     var body: some View {
         HStack(spacing: 6) {
             if let url = sport.iconURL {
-                // TODO: add svg
-                Image(systemName: "bookmark.fill")
-                    .frame(width: 22, height: 22)
-                
+                SVGImageView(url: url)
+                    .frame(width: 24, height: 24)
             }
             Text(sport.name)
                 .font(.system(size: 12, weight: .semibold))
