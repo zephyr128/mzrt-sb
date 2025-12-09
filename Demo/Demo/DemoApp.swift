@@ -6,11 +6,17 @@
 //
 
 import SwiftUI
+import SDWebImage
+import SDWebImageSVGCoder
 
 @main
 struct DemoApp: App {
     
     let dependencies = AppDependencies()
+    
+    init () {
+        SDImageCodersManager.shared.addCoder(SDImageSVGCoder.shared)
+    }
     
     var body: some Scene {
         WindowGroup {
