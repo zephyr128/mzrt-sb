@@ -9,8 +9,12 @@ import SwiftUI
 
 @main
 struct DemoApp: App {
+    
+    let dependencies = AppDependencies()
+    
     var body: some Scene {
         WindowGroup {
+            MatchHomeScreen(viewModel: dependencies.makeMatchListViewModel())
         }
     }
 }
