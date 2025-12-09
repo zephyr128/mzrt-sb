@@ -12,6 +12,7 @@ enum TimeFilter: String, CaseIterable, Hashable {
     case tomorrow
     case weekend
     case nextWeek
+    case all
     
 
     var localizedName: String {
@@ -20,6 +21,7 @@ enum TimeFilter: String, CaseIterable, Hashable {
         case .tomorrow: return "Sutra"
         case .weekend: return "Vikend"
         case .nextWeek: return "Sl nedelja"
+        case .all: return "Sve"
         }
     }
 
@@ -43,6 +45,8 @@ enum TimeFilter: String, CaseIterable, Hashable {
             let nextWeekStart = thisWeek.end
             guard let nextWeekEnd = calendar.date(byAdding: .weekOfYear, value: 1, to: nextWeekStart) else { return false }
             return date >= nextWeekStart && date < nextWeekEnd
+        case .all:
+            return true
         }
     }
 }
