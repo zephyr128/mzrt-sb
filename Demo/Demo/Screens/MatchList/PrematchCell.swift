@@ -72,9 +72,9 @@ struct PrematchCell: View {
         let calendar = Calendar.current
         
         if calendar.isDateInToday(date) {
-            return NSLocalizedString("Danas", comment: "Today")
+            return "Danas"
         } else if calendar.isDateInTomorrow(date) {
-            return NSLocalizedString("Sutra", comment: "Tomorrow")
+            return "Sutra"
         } else {
             // Weekend or other day: show localized day + month
             let formatter = DateFormatter()

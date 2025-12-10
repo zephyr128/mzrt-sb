@@ -27,7 +27,7 @@ struct SportMatchesList: View {
     }
 
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             LazyVStack(spacing: 20, pinnedViews: []) {
                 MatchSection(title: "MEČEVI UŽIVO", matches: liveMatches)
                 MatchSection(title: "PREMATCH PONUDA",
@@ -65,7 +65,8 @@ struct MatchSection: View {
             }
             
             if matches.isEmpty {
-                EmptyStateView(title: NSLocalizedString("Nema dostupnih mečeva", comment: ""), message: "")
+                EmptyStateView(title: "Nema dostupnih mečeva", message: "Za izabrani period nema dostupnih mečeva")
+                    .padding(.vertical)
             } else {
                 LazyVStack(spacing: 12) {
                     ForEach(matches, id: \.id) { match in

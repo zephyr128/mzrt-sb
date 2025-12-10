@@ -33,8 +33,8 @@ struct MatchHomeScreen: View {
                 .environmentObject(viewModel)
         case .empty:
             EmptyStateView(
-                title: NSLocalizedString("Nema dostupnih mečeva", comment: "No matches"),
-                message: NSLocalizedString("Proverite kasnije ili se povežite na internet.", comment: "Try again later")
+                title: "Nema dostupnih mečeva",
+                message: "Proverite kasnije ili se povežite na internet."
             )
         case .error(let message):
             ErrorStateView(message: message, retryAction: viewModel.loadData)
@@ -64,6 +64,7 @@ struct SportCategoryPager: View {
                     .tag(sport.id)
                 }
             }
+            .animation(.snappy, value: selectedSportId)
             .tabViewStyle(.page(indexDisplayMode: .never))
         }
         .padding(.top, 24)

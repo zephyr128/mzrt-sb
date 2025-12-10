@@ -28,6 +28,8 @@ struct SportCategorySelector: View {
     }
 }
 
+import SwiftUI
+
 struct SportCategoryButton: View {
     let sport: Sport
     let isSelected: Bool
@@ -37,19 +39,29 @@ struct SportCategoryButton: View {
             if let url = sport.iconURL {
                 SVGImageView(url: url)
                     .frame(width: 24, height: 24)
+            } else {
+                Spacer()
+                    .frame(width: 24, height: 24)
             }
-            Text(sport.name)
-                .font(.system(size: 12, weight: .semibold))
-                .lineLimit(1)
+
+            if isSelected {
+                Text(sport.name)
+                    .font(.system(size: 12, weight: .semibold))
+                    .lineLimit(1)
+                    .transition(.move(edge: .trailing).combined(with: .opacity))
+                    .animation(.smooth, value: isSelected)
+            }
         }
-        .padding(.horizontal, 10)
+        .padding(.horizontal, isSelected ? 12 : 10)
         .padding(.vertical, 6)
         .background(
-            RoundedRectangle(cornerRadius: 8)
+            RoundedRectangle(cornerRadius: 10)
                 .fill(isSelected ? Color.primaryColor : Color.secondaryColor)
+                .animation(.smooth, value: isSelected)
         )
+        .clipped()
         .foregroundColor(isSelected ? Color.black : Color.primaryText)
-        .animation(.easeInOut(duration: 0.15), value: isSelected)
+        .animation(.smooth, value: isSelected)
     }
 }
 

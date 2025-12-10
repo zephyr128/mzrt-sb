@@ -20,7 +20,7 @@ enum TimeFilter: String, CaseIterable, Hashable {
         case .today: return "Danas"
         case .tomorrow: return "Sutra"
         case .weekend: return "Vikend"
-        case .nextWeek: return "Sl nedelja"
+        case .nextWeek: return "Sledeća nedelja"
         case .all: return "Sve"
         }
     }
