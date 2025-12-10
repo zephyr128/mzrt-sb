@@ -25,6 +25,7 @@ struct SportCategorySelector: View {
                 }
             }
         }
+        .animation(.smooth, value: selectedSportId)
     }
 }
 
@@ -49,7 +50,6 @@ struct SportCategoryButton: View {
                     .font(.system(size: 12, weight: .semibold))
                     .lineLimit(1)
                     .transition(.move(edge: .trailing).combined(with: .opacity))
-                    .animation(.smooth, value: isSelected)
             }
         }
         .padding(.horizontal, isSelected ? 12 : 10)
@@ -57,7 +57,6 @@ struct SportCategoryButton: View {
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .fill(isSelected ? Color.primaryColor : Color.secondaryColor)
-                .animation(.smooth, value: isSelected)
         )
         .clipped()
         .foregroundColor(isSelected ? Color.black : Color.primaryText)
