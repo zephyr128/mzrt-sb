@@ -74,6 +74,11 @@ final class MatchListViewModel: ObservableObject {
         resetState()
         startStreaming()
     }
+    
+    func refreshData() {
+        streamTask?.cancel()
+        startStreaming()
+    }
 
     // MARK: - Private Helpers
 

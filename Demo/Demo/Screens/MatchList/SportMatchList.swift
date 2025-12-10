@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SportMatchesList: View {
     let matches: [MatchDisplayItem]
+    @EnvironmentObject var viewModel: MatchListViewModel
     @State private var timeFilter: TimeFilter = .today
     private let now = Date()
     
@@ -36,6 +37,9 @@ struct SportMatchesList: View {
                                  timeFilter: $timeFilter)
             }
             .padding(.top, 16)
+        }
+        .refreshable {
+            viewModel.refreshData()
         }
     }
 }
