@@ -15,7 +15,7 @@ struct TimeFilterTabView: View {
             Text(filter.localizedName)
                 .font(.system(size: 12, weight: .semibold))
                 .padding(.horizontal, 18)
-                .padding(.vertical, 10)
+                .padding(.vertical, 14)
                 .background(RoundedRectangle(cornerRadius: 8).fill(isSelected ? Color.primaryColor : Color.secondaryColor))
                 .foregroundColor(isSelected ? Color.black : Color.primaryText)
         }

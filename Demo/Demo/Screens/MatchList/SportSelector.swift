@@ -53,7 +53,7 @@ struct SportCategoryButton: View {
             }
         }
         .padding(.horizontal, isSelected ? 12 : 10)
-        .padding(.vertical, 6)
+        .padding(.vertical, 10)
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .fill(isSelected ? Color.primaryColor : Color.secondaryColor)
